@@ -1,0 +1,148 @@
+keycloak:
+  auth:
+    adminUser: ""
+    adminPassword: ""
+
+  production: false
+  proxy: edge
+
+  existingConfigmap: ""
+  extraStartupArgs: ""
+  initdbScripts: {}
+  initdbScriptsConfigMap: ""
+  command: []
+  args: []
+  extraEnvVars:
+    - name: KEYCLOAK_EXTRA_ARGS
+      value: "--import-realm"
+  extraEnvVarsCM: ""
+  extraEnvVarsSecret: ""
+  replicaCount: 1
+  containerPorts:
+    http: 8080
+    https: 8443
+    infinispan: 7800
+  extraContainerPorts: []
+
+  podSecurityContext:
+    enabled: false
+    fsGroup: null
+  containerSecurityContext:
+    enabled: false
+    runAsUser: null
+    runAsNonRoot: true
+
+  resources:
+    limits: {}
+    requests: {}
+
+  livenessProbe:
+    enabled: true
+    initialDelaySeconds: 300
+    periodSeconds: 1
+    timeoutSeconds: 5
+    failureThreshold: 3
+    successThreshold: 1
+
+  readinessProbe:
+    enabled: true
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 1
+    failureThreshold: 3
+    successThreshold: 1
+
+  startupProbe:
+    enabled: true
+    initialDelaySeconds: 30
+    periodSeconds: 5
+    timeoutSeconds: 1
+    failureThreshold: 60
+    successThreshold: 1
+
+  customLivenessProbe: {}
+  customReadinessProbe: {}
+  customStartupProbe: {}
+  lifecycleHooks: {}
+  hostAliases: []
+  extraVolumes:
+    - name: init-realm
+      configMap:
+        name: init-realm
+  extraVolumeMounts:
+    - name: init-realm
+      mountPath: /opt/bitnami/keycloak/data/import
+  initContainers: []
+  sidecars: []
+
+  service:
+    type: ClusterIP
+
+    http:
+      enabled: true
+
+    ports:
+      http: 80
+      https: 443
+
+  ingress:
+    enabled: false
+    ingressClassName: ""
+    pathType: ImplementationSpecific
+    apiVersion: ""
+    hostname: keycloak.local
+    path: "{{ .Values.httpRelativePath }}"
+    servicePort: http
+    annotations: {}
+    labels: {}
+    tls: false
+    selfSigned: false
+    extraHosts: []
+    extraPaths: []
+    extraTls: []
+    secrets: []
+    extraRules: []
+
+  postgresql:
+    enabled: true
+    volumePermissions:
+      enabled: false
+      securityContext:
+        runAsUser: "auto"
+    securityContext:
+      enabled: false
+    shmVolume:
+      chmod:
+        enabled: false
+    containerSecurityContext:
+      enabled: false
+    podSecurityContext:
+      enabled: false
+    primary:
+      volumePermissions:
+        enabled: false
+        securityContext:
+          runAsUser: "auto"
+      securityContext:
+        enabled: false
+      shmVolume:
+        chmod:
+          enabled: false
+      containerSecurityContext:
+        enabled: false
+      podSecurityContext:
+        enabled: false
+    auth:
+      postgresPassword: ""
+      username: ""
+      password: ""
+      database: ""
+      existingSecret: ""
+    architecture: standalone
+
+  logging:
+    output: default
+    level: INFO
+
+  cache:
+    enabled: false
