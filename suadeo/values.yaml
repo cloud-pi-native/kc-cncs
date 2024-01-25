@@ -144,13 +144,13 @@ keycloak:
       database: ""
       existingSecret: ""
     architecture: standalone
-  resources:
-    limits:
-      cpu: 1
-      memory: "1024Mi"
-    requests: 
-      cpu: 1
-      memory: "1024Mi"
+    resources:
+      limits:
+        cpu: 1
+        memory: "1024Mi"
+      requests: 
+        cpu: 1
+        memory: "1024Mi"
 
   logging:
     output: default
